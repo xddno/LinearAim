@@ -39,6 +39,41 @@ replay_*.log
 *.hprof
 *.jfr
 
-# workbuddy 项目数据（本地笔记，不纳入版本控制）
+# AI Agent instruction files
 
+AGENTS.md
+AGENTS.override.md
+AGENT.md
+CLAUDE.md
+CLAUDE.local.md
+GEMINI.md
+.cursorrules
+.windsurfrules
+.clinerules
+.roorules
+.roorules-*
+.rooignore
+.roomodes
+.rules
+.github/copilot-instructions.md
+.github/instructions/
+.github/agents/
+.github/prompts/
+.github/skills/
+.codex/
+.agents/
+.claude/
+.cursor/
+.gemini/
+.cline/
+.clinerules/
+.roo/
+.opencode/
+opencode.json
+opencode.jsonc
+.continue/
+.windsurf/
+.junie/
+.aiassistant/
+.aider*
 .workbuddy/
