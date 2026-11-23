@@ -3,48 +3,56 @@
 [![build](https://github.com/xddno/LinearAim/actions/workflows/build.yml/badge.svg)](https://github.com/xddno/LinearAim/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-把 Minecraft 的鼠标灵敏度变**线性**，参数体系对齐主流 FPS。
+**English** | [简体中文](README_zh-CN.md)
 
-原版的鼠标灵敏度是三次曲线：滑块值先映射成 `f = 滑块 * 0.6 + 0.2`，最终转向速度是 `8 * f³`。
-所以滑块前段很肉、后段突然变快，很难和其他 FPS 保持一致的肌肉记忆。
+Turns Minecraft's mouse sensitivity into a **linear** scale, with a parameter set modelled on
+mainstream FPS games.
 
-LinearAim 直接接管 `MouseHandler#turnPlayer`，让转向速度与灵敏度数值成**严格正比**，
-并把原版的灵敏度设置完全旁路——无论你在原版界面里怎么拖，都不会有任何效果。
+Vanilla uses a cubic curve: the slider value is mapped to `f = slider * 0.6 + 0.2`, and the final
+turn speed is `8 * f³`. The low end feels mushy while the high end suddenly becomes twitchy, which
+makes it hard to keep the same muscle memory across games.
 
-## 参数
+LinearAim takes over `MouseHandler#turnPlayer` so that turn speed is **strictly proportional** to
+the sensitivity value, and bypasses the vanilla sensitivity setting entirely — no matter how you
+drag the vanilla slider, it has no effect.
 
-| 参数 | 默认 | 范围 / 步进 | 说明 |
+## Parameters
+
+| Parameter | Default | Range / step | Description |
 | --- | --- | --- | --- |
-| `sensitivity` | `6.820` | `0.05 ~ 30.00`，步进 `0.005` | 主流 FPS 的灵敏度数值，直接填你在其他游戏里的数 |
-| `sensitivity_y_scale` | `1.00` | `0.10 ~ 3.00`，步进 `0.01` | 垂直方向额外倍率 |
-| `m_yaw` | `0.022` | `0.001 ~ 0.100`，步进 `0.001` | 水平角度系数，单位：度/计数 |
-| `m_pitch` | `0.022` | `0.001 ~ 0.100`，步进 `0.001` | 垂直角度系数，单位：度/计数 |
-| `invertY` | `false` | 开关 | 反转 Y 轴（接管原版的「反转鼠标」） |
-| `enabled` | `true` | 开关 | 总开关，关掉后完全回到原版 |
+| `sensitivity` | `6.820` | `0.05 ~ 30.00`, step `0.005` | Sensitivity value from mainstream FPS games; enter your own number |
+| `sensitivity_y_scale` | `1.00` | `0.10 ~ 3.00`, step `0.01` | Extra multiplier for vertical movement |
+| `m_yaw` | `0.022` | `0.001 ~ 0.100`, step `0.001` | Horizontal angle factor, in degrees per count |
+| `m_pitch` | `0.022` | `0.001 ~ 0.100`, step `0.001` | Vertical angle factor, in degrees per count |
+| `invertY` | `false` | toggle | Invert the Y axis (overrides vanilla "Invert Mouse") |
+| `enabled` | `true` | toggle | Master switch; turn off to restore vanilla behaviour |
 
-角度换算是经典 FPS 那套：
-
-```
-每计数转角(水平) = sensitivity × m_yaw
-每计数转角(垂直) = sensitivity × m_pitch × sensitivity_y_scale
-```
-
-所以 `sensitivity 6.25` + `m_yaw 0.022` 就是每计数 0.1375 度，和你在其他游戏里完全一致。
-Minecraft 的 `Entity#turn` 把 turn 参数乘以 0.15 得到度数，模组内部按 `0.15 / 0.022` 换算过去。
-
-原版默认手感（原版滑块 50%，即 0.15 度/计数）对应 **6.818**，所以默认值取 `6.820`。
-DPI 不影响这个换算，它只决定 eDPI，两边口径相同。
-
-补充：
-
-- 首次运行（没有配置文件时）自动把原版灵敏度换算成等效线性数值，装上模组不会有手感突变
-- 开镜（望远镜）时仍保留原版的 1/8 降敏比例
-- 配置文件：`config/linearaim.json`
-
-## 游戏内命令（客户端）
+Angle conversion follows the classic FPS convention:
 
 ```
-/linearaim                        查看全部参数
+degrees per count (horizontal) = sensitivity × m_yaw
+degrees per count (vertical)   = sensitivity × m_pitch × sensitivity_y_scale
+```
+
+So `sensitivity 6.25` with `m_yaw 0.022` gives 0.1375° per count — identical to what the same
+numbers produce elsewhere. Minecraft's `Entity#turn` multiplies the turn argument by 0.15 to obtain
+degrees, so the mod converts using `0.15 / 0.022`.
+
+Vanilla's default feel (slider at 50%, i.e. 0.15° per count) corresponds to **6.818**, which is why
+the default is `6.820`. DPI does not affect this conversion — it only determines eDPI, and the unit
+is the same on both sides.
+
+Notes:
+
+- On first launch (no config file yet) the vanilla sensitivity is converted into an equivalent
+  linear value, so installing the mod does not change how the game feels
+- While scoping (spyglass), vanilla's 1/8 sensitivity reduction is preserved
+- Config file: `config/linearaim.json`
+
+## In-game commands (client)
+
+```
+/linearaim                        show all parameters
 /linearaim sensitivity 6.25
 /linearaim y_scale 1.0
 /linearaim m_yaw 0.022
@@ -54,63 +62,78 @@ DPI 不影响这个换算，它只决定 eDPI，两边口径相同。
 /linearaim reset
 ```
 
-## 图形界面
+## GUI
 
-- Mod Menu 里的「配置」按钮
-- 或游戏内按 **F10**
+- The "Config" button inside Mod Menu
+- Or press **F10** in game
 
-界面分两页：
+Two pages:
 
-- **灵敏度**：滑块（`−`/`+` 每次 0.005）、精确输入框（可直接敲 `1.625`）
-- **高级**：`m_yaw`、`m_pitch`、`sensitivity_y_scale`、反转 Y、总开关
+- **Sensitivity**: slider (`−` / `+` in 0.005 steps) and an exact input box (type `1.625` directly)
+- **Advanced**: `m_yaw`, `m_pitch`, `sensitivity_y_scale`, invert Y, master switch
 
-滑块获得焦点后按 `←` / `→` 可以按 1 step 微调。
+With a slider focused, `←` / `→` adjusts it by one step.
 
-## 运行环境
+## Requirements
 
 - Minecraft **1.21.11**
 - Fabric Loader **0.20.1+**
 - Fabric API
-- [Mod Menu](https://modrinth.com/mod/modmenu)（可选，只用于提供配置入口）
+- [Mod Menu](https://modrinth.com/mod/modmenu) (optional, only provides the config entry point)
 
-## 构建
+## Building
 
-Loom 1.19 要求**用 JDK 25 运行 Gradle**，但产物字节码目标是 Java 21（游戏要求）。
+Loom 1.19 requires **JDK 25 to run Gradle**, while the produced bytecode targets Java 21 (what the
+game requires).
 
 ```bash
-export JAVA_HOME="/d/Program Files/Eclipse Adoptium/jdk-25.0.5.8-hotspot"
+export JAVA_HOME="/path/to/jdk-25"
 ./gradlew build
 ```
 
-产物：`build/libs/linearaim-1.0.0.jar`
+Output: `build/libs/linearaim-1.0.0.jar`
 
-所有依赖都来自官方源：`services.gradle.org`（Gradle 分发）、Maven Central、Fabric Maven、Terraformers Maven。
+All dependencies come from official sources: `services.gradle.org` (Gradle distribution),
+Maven Central, Fabric Maven and Terraformers Maven.
 
-中国大陆网络访问较慢时，可以自行替换成本地镜像：
+If you are on a slow connection in mainland China, you can point them at a local mirror:
 
-- `gradle/wrapper/gradle-wrapper.properties` 里的 `distributionUrl` 换成 `https://mirrors.cloud.tencent.com/gradle/gradle-9.8.2-bin.zip`
-- 在 `settings.gradle.kts` 和 `build.gradle.kts` 的 `repositories` 里加 `https://maven.aliyun.com/repository/public`
+- Replace `distributionUrl` in `gradle/wrapper/gradle-wrapper.properties` with
+  `https://mirrors.cloud.tencent.com/gradle/gradle-9.8.2-bin.zip`
+- Add `https://maven.aliyun.com/repository/public` to `repositories` in both `settings.gradle.kts`
+  and `build.gradle.kts`
 
-## 贡献与分支策略
+## Contributing and branch policy
 
-`main` 分支受保护：
+`main` is protected:
 
-- 禁止直接 push，所有改动走 Pull Request
-- 禁止 force push，禁止删除分支
-- 代码类改动会自动跑 `build`；纯文档改动（`*.md`、`LICENSE`、`.gitignore` 等）不触发 CI
+- Direct pushes are rejected; every change goes through a pull request
+- Force pushes and branch deletion are disabled
+- Code changes automatically run `build`; documentation-only changes (`*.md`, `LICENSE`,
+  `.gitignore`, etc.) do not trigger CI
 
-仓库自带 `pre-push` 钩子，本地启用一次即可在推送阶段提前拦截：
+The repository ships a `pre-push` hook. Enable it once locally to catch mistakes before they reach
+the remote:
 
 ```bash
 git config core.hooksPath .githooks
 ```
 
-## 许可与合规
+## License and compliance
 
-- 本项目**自己的代码**采用 [MIT 许可证](LICENSE)，版权归 xddno。
-- 本项目**不包含** Minecraft 的任何代码、资源或反编译产物。Minecraft 及其相关权利归 Mojang / Microsoft 所有，其使用受 [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) 约束。MIT 仅覆盖本仓库的原创代码，不覆盖 Minecraft。
-- 构建时通过 Fabric Loom 使用 **Mojang 官方混淆映射**（`loom.officialMojangMappings()`）。按 Mojang 的条款，映射可供开发目的复制与使用，但不得完整、未修改地再分发。本项目**不随仓库分发任何映射文件**：映射由 Loom 在构建时从 Mojang 服务器获取并缓存在本地。
-- 发布的 jar 经 `remapJar` 处理，内部引用全部是 Fabric 的 **intermediary** 名称（`class_xxx` / `method_xxx`），不包含 Mojang 映射中的可读名称。
-- 本项目部分代码由 AI 辅助生成。
+- The project's **own code** is licensed under [MIT](LICENSE), copyright xddno.
+- This project **contains no** Minecraft code, assets or decompiled output. Minecraft and related
+  rights belong to Mojang / Microsoft and are governed by the
+  [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula). MIT covers only the
+  original code in this repository, not Minecraft itself.
+- Builds use **Mojang's official mappings** (`loom.officialMojangMappings()`) through Fabric Loom.
+  Under Mojang's terms the mappings may be copied and used for development purposes, but may not be
+  redistributed complete and unmodified. This project **does not distribute any mapping files**:
+  Loom fetches them from Mojang's servers at build time and caches them locally.
+- The published jar is processed by `remapJar`, so all internal references use Fabric
+  **intermediary** names (`class_xxx` / `method_xxx`) and contain no readable names from Mojang's
+  mappings.
+- Parts of this project's code were generated with the assistance of AI.
 
-如果你需要完全规避 Mojang 映射的授权争议，可以把 `build.gradle.kts` 换成 CC0 的 Yarn 映射，代价是需要按 Yarn 的命名重写源码。
+If you want to avoid the Mojang mapping licensing question entirely, switch `build.gradle.kts` to
+the CC0 Yarn mappings — at the cost of rewriting the source against Yarn's naming.
