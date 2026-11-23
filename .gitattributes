@@ -7,3 +7,6 @@
 # These are Windows script files and should use crlf
 *.bat           text eol=crlf
 
+# Git hooks must stay LF so sh can execute them
+.githooks/*     text eol=lf
+

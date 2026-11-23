@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# 阻止直接推送到受保护分支（main），要求走 Pull Request。
+# 启用方式：git config core.hooksPath .githooks
+
+protected_ref="refs/heads/main"
+blocked=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+    if [ "$remote_ref" = "$protected_ref" ]; then
+        blocked=1
+        echo ""
+        echo "✗ 已阻止：不能直接推送到 main。"
+        echo ""
+        echo "  请改用 Pull Request："
+        echo "    git switch -c feat/your-change"
+        echo "    git add -A && git commit -m \"...\""
+        echo "    git push -u origin feat/your-change"
+        echo "    gh pr create --fill"
+        echo ""
+    fi
+done
+
+exit $blocked
