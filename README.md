@@ -97,7 +97,7 @@ export JAVA_HOME="/d/Program Files/Eclipse Adoptium/jdk-25.0.5.8-hotspot"
 
 - 禁止直接 push，所有改动走 Pull Request
 - 禁止 force push，禁止删除分支
-- PR 需要通过 CI（build）
+- 代码类改动会自动跑 `build`；纯文档改动（`*.md`、`LICENSE`、`.gitignore` 等）不触发 CI
 
 仓库自带 `pre-push` 钩子，本地启用一次即可在推送阶段提前拦截：
 
