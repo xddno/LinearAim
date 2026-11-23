@@ -3,7 +3,7 @@
 [![build](https://github.com/xddno/LinearAim/actions/workflows/build.yml/badge.svg)](https://github.com/xddno/LinearAim/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-把 Minecraft 的鼠标灵敏度变**线性**，参数体系对齐 CS2。
+把 Minecraft 的鼠标灵敏度变**线性**，参数体系对齐主流 FPS。
 
 原版的鼠标灵敏度是三次曲线：滑块值先映射成 `f = 滑块 * 0.6 + 0.2`，最终转向速度是 `8 * f³`。
 所以滑块前段很肉、后段突然变快，很难和其他 FPS 保持一致的肌肉记忆。
@@ -15,29 +15,29 @@ LinearAim 直接接管 `MouseHandler#turnPlayer`，让转向速度与灵敏度�
 
 | 参数 | 默认 | 范围 / 步进 | 说明 |
 | --- | --- | --- | --- |
-| `sensitivity` | `6.820` | `0.05 ~ 30.00`，步进 `0.005` | CS2 的灵敏度数值，直接填你在 CS2 里的数 |
+| `sensitivity` | `6.820` | `0.05 ~ 30.00`，步进 `0.005` | 主流 FPS 的灵敏度数值，直接填你在其他游戏里的数 |
 | `sensitivity_y_scale` | `1.00` | `0.10 ~ 3.00`，步进 `0.01` | 垂直方向额外倍率 |
 | `m_yaw` | `0.022` | `0.001 ~ 0.100`，步进 `0.001` | 水平角度系数，单位：度/计数 |
 | `m_pitch` | `0.022` | `0.001 ~ 0.100`，步进 `0.001` | 垂直角度系数，单位：度/计数 |
 | `invertY` | `false` | 开关 | 反转 Y 轴（接管原版的「反转鼠标」） |
 | `enabled` | `true` | 开关 | 总开关，关掉后完全回到原版 |
 
-角度换算是 CS2 那套：
+角度换算是经典 FPS 那套：
 
 ```
 每计数转角(水平) = sensitivity × m_yaw
 每计数转角(垂直) = sensitivity × m_pitch × sensitivity_y_scale
 ```
 
-所以 `sensitivity 6.25` + `m_yaw 0.022` 就是每计数 0.1375 度，和你 CS2 里完全一致。
+所以 `sensitivity 6.25` + `m_yaw 0.022` 就是每计数 0.1375 度，和你在其他游戏里完全一致。
 Minecraft 的 `Entity#turn` 把 turn 参数乘以 0.15 得到度数，模组内部按 `0.15 / 0.022` 换算过去。
 
 原版默认手感（原版滑块 50%，即 0.15 度/计数）对应 **6.818**，所以默认值取 `6.820`。
-DIP 不影响这个换算，DPI 只决定 eDPI，两边口径相同。
+DPI 不影响这个换算，它只决定 eDPI，两边口径相同。
 
 补充：
 
-- 首次运行（没有配置文件时）自动把原版灵敏度换算成等效 CS2 数值，装上模组不会有手感突变
+- 首次运行（没有配置文件时）自动把原版灵敏度换算成等效线性数值，装上模组不会有手感突变
 - 开镜（望远镜）时仍保留原版的 1/8 降敏比例
 - 配置文件：`config/linearaim.json`
 

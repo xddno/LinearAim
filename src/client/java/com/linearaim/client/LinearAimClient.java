@@ -19,7 +19,7 @@ public class LinearAimClient implements ClientModInitializer {
 		// 尽早加载配置，保证 mixin 第一次读取时已经就绪
 		LinearAimConfig.get();
 
-		// CS2 风格的客户端命令
+		// 主机控制台风格的客户端命令
 		LinearAimCommand.register();
 
 		KeyMapping.Category category = KeyMapping.Category.register(

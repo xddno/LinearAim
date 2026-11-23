@@ -12,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import java.util.Locale;
 
 /**
- * CS2 风格的客户端命令，例如：
+ * 主机控制台风格的客户端命令，例如：
  * <pre>
  *   /linearaim                      查看全部参数
  *   /linearaim sensitivity 6.25

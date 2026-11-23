@@ -15,19 +15,19 @@ import java.util.Locale;
 /**
  * LinearAim 的配置，保存在 {@code config/linearaim.json}。
  *
- * <p>参数语义完全对齐 CS2：
+ * <p>参数语义完全对齐主流 FPS：
  * <pre>
  *   每计数转角(水平) = sensitivity * m_yaw
  *   每计数转角(垂直) = sensitivity * m_pitch * sensitivity_y_scale
  * </pre>
- * 其中 {@code sensitivity} 就是 CS2 里那个数，{@code m_yaw} / {@code m_pitch} 是"度/计数"，
- * 默认 0.022。所以在 CS2 里用 6.25，这里也填 6.25 即可。
+ * 其中 {@code sensitivity} 就是主流 FPS 里那个数，{@code m_yaw} / {@code m_pitch} 是"度/计数"，
+ * 默认 0.022。所以在主流 FPS 里用 6.25，这里也填 6.25 即可。
  *
  * <p>Minecraft 的 {@code Entity#turn} 会把 turn 参数乘以 0.15 得到度数，因此这里
- * 需要把 CS2 的度数换算成乘数：{@code multiplier = sensitivity * m / 0.15}。
+ * 需要把主流 FPS 的度数换算成乘数：{@code multiplier = sensitivity * m / 0.15}。
  */
 public final class LinearAimConfig {
-	/** 当前配置格式版本：2 起 sensitivity 使用 CS2 语义。 */
+	/** 当前配置格式版本：2 起 sensitivity 使用角度语义。 */
 	private static final int CONFIG_VERSION = 2;
 
 	/** 灵敏度可调范围与步长（1 step = 0.005）。 */
@@ -45,9 +45,9 @@ public final class LinearAimConfig {
 	public static final double MAX_M = 0.100D;
 	public static final double M_STEP = 0.001D;
 
-	public static final double DEFAULT_M = AimMath.CS_DEFAULT_M;
+	public static final double DEFAULT_M = AimMath.DEFAULT_DEGREES_PER_COUNT;
 	public static final double DEFAULT_Y_SCALE = 1.0D;
-	/** 原版默认手感对应的 CS2 灵敏度（约 6.82）。 */
+	/** 原版默认手感对应的线性灵敏度（约 6.82）。 */
 	public static final double DEFAULT_SENSITIVITY = 6.82D;
 
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -55,22 +55,22 @@ public final class LinearAimConfig {
 
 	private static LinearAimConfig instance;
 
-	/** 配置格式版本，用于把旧配置迁移到 CS2 语义。 */
+	/** 配置格式版本，用于把旧配置迁移到角度语义。 */
 	public int configVersion = 0;
 
 	/** 是否启用线性灵敏度。关闭后完全回到原版行为。 */
 	public boolean enabled = true;
 
-	/** CS2 灵敏度：每计数转角 = sensitivity * m_yaw 度。 */
+	/** 线性灵敏度：每计数转角 = sensitivity * m_yaw 度。 */
 	public double sensitivity = DEFAULT_SENSITIVITY;
 
-	/** 垂直方向额外倍率（CS2 的 sensitivity_y_scale）。 */
+	/** 垂直方向额外倍率（主流 FPS 的 sensitivity_y_scale）。 */
 	public double sensitivityYScale = DEFAULT_Y_SCALE;
 
-	/** 水平角度系数（CS2 的 m_yaw），单位：度/计数。 */
+	/** 水平角度系数（主流 FPS 的 m_yaw），单位：度/计数。 */
 	public double mYaw = DEFAULT_M;
 
-	/** 垂直角度系数（CS2 的 m_pitch），单位：度/计数。 */
+	/** 垂直角度系数（主流 FPS 的 m_pitch），单位：度/计数。 */
 	public double mPitch = DEFAULT_M;
 
 	/** 反转 Y 轴（会接管原版的"反转鼠标"设置）。 */
@@ -109,7 +109,7 @@ public final class LinearAimConfig {
 	}
 
 	/**
-	 * 旧格式（v1）的 sensitivity 是"原版转速乘数"，与 CS2 的数值没有对应关系
+	 * 旧格式（v1）的 sensitivity 是"原版转速乘数"，与主流 FPS 的数值没有对应关系
 	 * （旧值 6.25 在新语义下等于 42.6），等价迁移只会让人以为"还是太快"。
 	 * 因此这里先备份旧文件，再把 sensitivity 重置为默认值，其余参数保留。
 	 */
@@ -122,7 +122,7 @@ public final class LinearAimConfig {
 			backupLegacyFile();
 			this.sensitivity = DEFAULT_SENSITIVITY;
 			this.configVersion = CONFIG_VERSION;
-			LinearAim.LOGGER.info("检测到旧版配置，已将 sensitivity 重置为默认的 CS2 数值 {}（旧文件备份为 linearaim.json.v1.bak）",
+			LinearAim.LOGGER.info("检测到旧版配置，已将 sensitivity 重置为默认的线性数值 {}（旧文件备份为 linearaim.json.v1.bak）",
 					String.format(Locale.ROOT, "%.3f", DEFAULT_SENSITIVITY));
 		}
 	}
@@ -140,7 +140,7 @@ public final class LinearAimConfig {
 	}
 
 	/**
-	 * 首次使用（还没有配置文件）时，把原版灵敏度换算成等效的 CS2 灵敏度，
+	 * 首次使用（还没有配置文件）时，把原版灵敏度换算成等效的线性灵敏度，
 	 * 这样装上模组后手感不会突然变化。
 	 */
 	private void migrateFromVanilla() {
@@ -152,7 +152,7 @@ public final class LinearAimConfig {
 						AimMath.snap(AimMath.vanillaMultiplier(vanilla)
 								* AimMath.vanillaEquivalentSensitivity(), SENSITIVITY_STEP),
 						MIN_SENSITIVITY, MAX_SENSITIVITY);
-				LinearAim.LOGGER.info("已从原版灵敏度 {} 换算为 CS2 灵敏度 {}",
+				LinearAim.LOGGER.info("已从原版灵敏度 {} 换算为线性灵敏度 {}",
 						String.format(Locale.ROOT, "%.3f", vanilla),
 						String.format(Locale.ROOT, "%.3f", this.sensitivity));
 			}

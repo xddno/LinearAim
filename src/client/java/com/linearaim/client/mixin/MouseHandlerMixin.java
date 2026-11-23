@@ -48,7 +48,7 @@ public abstract class MouseHandlerMixin {
 			return option.get();
 		}
 		// 水平方向：每计数转角 = sensitivity * m_yaw 度，换算成 Minecraft 的转速乘数
-		double multiplier = AimMath.csToMultiplier(config.getSensitivity(), config.getMYaw());
+		double multiplier = AimMath.degreesToMultiplier(config.getSensitivity(), config.getMYaw());
 		return AimMath.toVanillaSensitivity(multiplier);
 	}
 

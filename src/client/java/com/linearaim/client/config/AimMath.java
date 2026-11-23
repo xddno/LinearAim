@@ -27,21 +27,21 @@ public final class AimMath {
 	 */
 	public static final double DEGREES_PER_TURN_UNIT = 0.15D;
 
-	/** CS2 默认的 m_yaw / m_pitch（度/计数）。 */
-	public static final double CS_DEFAULT_M = 0.022D;
+	/** 主流 FPS 默认的 m_yaw / m_pitch（度/计数）。 */
+	public static final double DEFAULT_DEGREES_PER_COUNT = 0.022D;
 
 	/**
-	 * 把 CS2 语义（sensitivity * m_yaw = 每计数转多少度）换算成 Minecraft 的转速乘数。
+	 * 把角度语义（sensitivity * m_yaw = 每计数转多少度）换算成 Minecraft 的转速乘数。
 	 */
-	public static double csToMultiplier(double sensitivity, double m) {
+	public static double degreesToMultiplier(double sensitivity, double m) {
 		return sensitivity * m / DEGREES_PER_TURN_UNIT;
 	}
 
 	/**
-	 * 原版默认（乘数 1.0，即 0.15 度/计数）对应的 CS2 灵敏度，约 6.818。
+	 * 原版默认（乘数 1.0，即 0.15 度/计数）对应的线性灵敏度，约 6.818。
 	 */
 	public static double vanillaEquivalentSensitivity() {
-		return DEGREES_PER_TURN_UNIT / CS_DEFAULT_M;
+		return DEGREES_PER_TURN_UNIT / DEFAULT_DEGREES_PER_COUNT;
 	}
 
 	/** 原版公式：滑块值 -> 最终转速乘数。 */
