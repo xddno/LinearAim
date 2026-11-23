@@ -83,6 +83,11 @@ export JAVA_HOME="/d/Program Files/Eclipse Adoptium/jdk-25.0.5.8-hotspot"
 
 依赖仓库已配置腾讯 Gradle 镜像与阿里云 Maven 镜像，Fabric / Terraformers 仓库直连。
 
-## 许可
+## 许可与合规
 
-CC0-1.0
+- 本项目**自己的代码**采用 [MIT 许可证](LICENSE)，版权归 xddno。
+- 本项目**不包含** Minecraft 的任何代码、资源或反编译产物。Minecraft 及其相关权利归 Mojang / Microsoft 所有，其使用受 [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) 约束。MIT 仅覆盖本仓库的原创代码，不覆盖 Minecraft。
+- 构建时通过 Fabric Loom 使用 **Mojang 官方混淆映射**（`loom.officialMojangMappings()`）。按 Mojang 的条款，映射可供开发目的复制与使用，但不得完整、未修改地再分发。本项目**不随仓库分发任何映射文件**：映射由 Loom 在构建时从 Mojang 服务器获取并缓存在本地。
+- 发布的 jar 经 `remapJar` 处理，内部引用全部是 Fabric 的 **intermediary** 名称（`class_xxx` / `method_xxx`），不包含 Mojang 映射中的可读名称。
+
+如果你需要完全规避 Mojang 映射的授权争议，可以把 `build.gradle.kts` 换成 CC0 的 Yarn 映射，代价是需要按 Yarn 的命名重写源码。
