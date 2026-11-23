@@ -1,5 +1,8 @@
 # LinearAim
 
+[![build](https://github.com/xddno/LinearAim/actions/workflows/build.yml/badge.svg)](https://github.com/xddno/LinearAim/actions/workflows/build.yml)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 把 Minecraft 的鼠标灵敏度变**线性**，参数体系对齐 CS2。
 
 原版的鼠标灵敏度是三次曲线：滑块值先映射成 `f = 滑块 * 0.6 + 0.2`，最终转向速度是 `8 * f³`。
