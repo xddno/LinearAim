@@ -3,7 +3,7 @@
 	"id": "linearaim",
 	"version": "${version}",
 	"name": "LinearAim",
-	"description": "用线性鼠标灵敏度完全取代原版的三次曲线灵敏度（手感与主流 FPS 一致）。灵敏度可以大于或小于 1，步进 0.005，可通过 Mod Menu 或 F10 打开配置界面。",
+	"description": "用线性鼠标灵敏度完全取代原版的三次曲线灵敏度（手感与主流 FPS 一致）。灵敏度可以大于或小于 1，步进 0.005，可通过 Mod Menu 或 F10 打开配置界面。部分代码由 AI 辅助生成。",
 	"authors": [
 		"LinearAim"
 	],
