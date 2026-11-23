@@ -86,7 +86,7 @@ export JAVA_HOME="/d/Program Files/Eclipse Adoptium/jdk-25.0.5.8-hotspot"
 
 所有依赖都来自官方源：`services.gradle.org`（Gradle 分发）、Maven Central、Fabric Maven、Terraformers Maven。
 
-中国大陆网络如果较慢，可以自行替换成本地镜像：
+中国大陆网络访问较慢时，可以自行替换成本地镜像：
 
 - `gradle/wrapper/gradle-wrapper.properties` 里的 `distributionUrl` 换成 `https://mirrors.cloud.tencent.com/gradle/gradle-9.8.2-bin.zip`
 - 在 `settings.gradle.kts` 和 `build.gradle.kts` 的 `repositories` 里加 `https://maven.aliyun.com/repository/public`
@@ -97,7 +97,7 @@ export JAVA_HOME="/d/Program Files/Eclipse Adoptium/jdk-25.0.5.8-hotspot"
 
 - 禁止直接 push，所有改动走 Pull Request
 - 禁止 force push，禁止删除分支
-- PR 需要通过 CI（build）
+- 代码类改动会自动跑 `build`；纯文档改动（`*.md`、`LICENSE`、`.gitignore` 等）不触发 CI
 
 仓库自带 `pre-push` 钩子，本地启用一次即可在推送阶段提前拦截：
 
