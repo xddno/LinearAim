@@ -2,6 +2,7 @@
 
 [![build](https://github.com/xddno/LinearAim/actions/workflows/build.yml/badge.svg)](https://github.com/xddno/LinearAim/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![release](https://img.shields.io/github/v/release/xddno/LinearAim)](https://github.com/xddno/LinearAim/releases/latest)
 
 **English** | [简体中文](README_zh-CN.md)
 
