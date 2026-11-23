@@ -2,9 +2,26 @@
 # and submitted pull request. This can help catch issues that only occur on
 # certain platforms or Java versions, and provides a first line of defence
 # against bad commits.
+#
+# 纯文档 / 仓库配置的改动不会触发构建，省掉无意义的 CI 时间。
 
 name: build
-on: [pull_request, push]
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - '.gitignore'
+      - '.gitattributes'
+      - '.githooks/**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - '.gitignore'
+      - '.gitattributes'
+      - '.githooks/**'
 
 jobs:
   build:
