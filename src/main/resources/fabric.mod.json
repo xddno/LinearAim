@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "linearaim",
+	"version": "${version}",
+	"name": "LinearAim",
+	"description": "用线性鼠标灵敏度完全取代原版的三次曲线灵敏度（就像 CS2 等主流 FPS）。灵敏度可以大于或小于 1，步进 0.005，可通过 Mod Menu 或 F10 打开配置界面。",
+	"authors": [
+		"LinearAim"
+	],
+	"contact": {},
+	"license": "CC0-1.0",
+	"icon": "assets/linearaim/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"com.linearaim.LinearAim"
+		],
+		"client": [
+			"com.linearaim.client.LinearAimClient"
+		],
+		"modmenu": [
+			"com.linearaim.client.ModMenuIntegration"
+		]
+	},
+	"mixins": [
+		{
+			"config": "linearaim.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"modmenu": "*"
+	}
+}

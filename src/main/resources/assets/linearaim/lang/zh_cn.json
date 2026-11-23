@@ -1,0 +1,18 @@
+{
+	"linearaim.title": "LinearAim",
+	"linearaim.tab.basic": "灵敏度",
+	"linearaim.tab.advanced": "高级",
+	"linearaim.option.sensitivity": "sensitivity（CS2 数值）",
+	"linearaim.option.mYaw": "m_yaw（度/计数）",
+	"linearaim.option.mPitch": "m_pitch（度/计数）",
+	"linearaim.option.yScale": "sensitivity_y_scale",
+	"linearaim.option.invertY": "反转 Y 轴",
+	"linearaim.option.enabled": "启用线性灵敏度",
+	"linearaim.button.apply": "应用",
+	"linearaim.button.reset": "恢复默认",
+	"linearaim.hint.enabled": "CS2 灵敏度 %s  ·  每计数 %s°",
+	"linearaim.hint.advanced": "垂直相对水平 ×%s  ·  m_yaw / m_pitch 单位：度/计数",
+	"linearaim.hint.disabled": "已关闭，正在使用原版灵敏度",
+	"key.linearaim.open_config": "打开配置界面",
+	"key.category.linearaim.main": "LinearAim"
+}

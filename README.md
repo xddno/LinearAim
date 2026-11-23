@@ -1,0 +1,88 @@
+# LinearAim
+
+把 Minecraft 的鼠标灵敏度变**线性**，参数体系对齐 CS2。
+
+原版的鼠标灵敏度是三次曲线：滑块值先映射成 `f = 滑块 * 0.6 + 0.2`，最终转向速度是 `8 * f³`。
+所以滑块前段很肉、后段突然变快，很难和其他 FPS 保持一致的肌肉记忆。
+
+LinearAim 直接接管 `MouseHandler#turnPlayer`，让转向速度与灵敏度数值成**严格正比**，
+并把原版的灵敏度设置完全旁路——无论你在原版界面里怎么拖，都不会有任何效果。
+
+## 参数
+
+| 参数 | 默认 | 范围 / 步进 | 说明 |
+| --- | --- | --- | --- |
+| `sensitivity` | `6.820` | `0.05 ~ 30.00`，步进 `0.005` | CS2 的灵敏度数值，直接填你在 CS2 里的数 |
+| `sensitivity_y_scale` | `1.00` | `0.10 ~ 3.00`，步进 `0.01` | 垂直方向额外倍率 |
+| `m_yaw` | `0.022` | `0.001 ~ 0.100`，步进 `0.001` | 水平角度系数，单位：度/计数 |
+| `m_pitch` | `0.022` | `0.001 ~ 0.100`，步进 `0.001` | 垂直角度系数，单位：度/计数 |
+| `invertY` | `false` | 开关 | 反转 Y 轴（接管原版的「反转鼠标」） |
+| `enabled` | `true` | 开关 | 总开关，关掉后完全回到原版 |
+
+角度换算是 CS2 那套：
+
+```
+每计数转角(水平) = sensitivity × m_yaw
+每计数转角(垂直) = sensitivity × m_pitch × sensitivity_y_scale
+```
+
+所以 `sensitivity 6.25` + `m_yaw 0.022` 就是每计数 0.1375 度，和你 CS2 里完全一致。
+Minecraft 的 `Entity#turn` 把 turn 参数乘以 0.15 得到度数，模组内部按 `0.15 / 0.022` 换算过去。
+
+原版默认手感（原版滑块 50%，即 0.15 度/计数）对应 **6.818**，所以默认值取 `6.820`。
+DIP 不影响这个换算，DPI 只决定 eDPI，两边口径相同。
+
+补充：
+
+- 首次运行（没有配置文件时）自动把原版灵敏度换算成等效 CS2 数值，装上模组不会有手感突变
+- 开镜（望远镜）时仍保留原版的 1/8 降敏比例
+- 配置文件：`config/linearaim.json`
+
+## 游戏内命令（客户端）
+
+```
+/linearaim                        查看全部参数
+/linearaim sensitivity 6.25
+/linearaim y_scale 1.0
+/linearaim m_yaw 0.022
+/linearaim m_pitch 0.022
+/linearaim invertY true
+/linearaim enabled false
+/linearaim reset
+```
+
+## 图形界面
+
+- Mod Menu 里的「配置」按钮
+- 或游戏内按 **F10**
+
+界面分两页：
+
+- **灵敏度**：滑块（`−`/`+` 每次 0.005）、精确输入框（可直接敲 `1.625`）
+- **高级**：`m_yaw`、`m_pitch`、`sensitivity_y_scale`、反转 Y、总开关
+
+滑块获得焦点后按 `←` / `→` 可以按 1 step 微调。
+
+## 运行环境
+
+- Minecraft **1.21.11**
+- Fabric Loader **0.20.1+**
+- Fabric API
+- [Mod Menu](https://modrinth.com/mod/modmenu)（可选，只用于提供配置入口）
+
+## 构建
+
+Loom 1.19 要求**用 JDK 25 运行 Gradle**，但产物字节码目标是 Java 21（游戏要求）。
+
+```bash
+export JAVA_HOME="/d/Program Files/Eclipse Adoptium/jdk-25.0.5.8-hotspot"
+./gradlew build
+```
+
+产物：`build/libs/linearaim-1.0.0.jar`
+
+依赖仓库已配置腾讯 Gradle 镜像与阿里云 Maven 镜像，Fabric / Terraformers 仓库直连。
+
+## 许可
+
+CC0-1.0

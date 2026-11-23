@@ -1,0 +1,18 @@
+{
+	"linearaim.title": "LinearAim",
+	"linearaim.tab.basic": "Sensitivity",
+	"linearaim.tab.advanced": "Advanced",
+	"linearaim.option.sensitivity": "sensitivity (CS2 value)",
+	"linearaim.option.mYaw": "m_yaw (deg/count)",
+	"linearaim.option.mPitch": "m_pitch (deg/count)",
+	"linearaim.option.yScale": "sensitivity_y_scale",
+	"linearaim.option.invertY": "Invert Y Axis",
+	"linearaim.option.enabled": "Enable Linear Sensitivity",
+	"linearaim.button.apply": "Apply",
+	"linearaim.button.reset": "Reset to Default",
+	"linearaim.hint.enabled": "CS2 sensitivity %s  ·  %s° per count",
+	"linearaim.hint.advanced": "Vertical vs horizontal ×%s  ·  m_yaw / m_pitch in deg/count",
+	"linearaim.hint.disabled": "Disabled, using vanilla sensitivity",
+	"key.linearaim.open_config": "Open Config Screen",
+	"key.category.linearaim.main": "LinearAim"
+}
