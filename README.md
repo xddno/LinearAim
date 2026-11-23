@@ -81,7 +81,12 @@ export JAVA_HOME="/d/Program Files/Eclipse Adoptium/jdk-25.0.5.8-hotspot"
 
 产物：`build/libs/linearaim-1.0.0.jar`
 
-依赖仓库已配置腾讯 Gradle 镜像与阿里云 Maven 镜像，Fabric / Terraformers 仓库直连。
+所有依赖都来自官方源：`services.gradle.org`（Gradle 分发）、Maven Central、Fabric Maven、Terraformers Maven。
+
+中国大陆网络如果较慢，可以自行替换成本地镜像：
+
+- `gradle/wrapper/gradle-wrapper.properties` 里的 `distributionUrl` 换成 `https://mirrors.cloud.tencent.com/gradle/gradle-9.8.2-bin.zip`
+- 在 `settings.gradle.kts` 和 `build.gradle.kts` 的 `repositories` 里加 `https://maven.aliyun.com/repository/public`
 
 ## 许可与合规
 

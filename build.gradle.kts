@@ -9,11 +9,7 @@ repositories {
 		name = "TerraformersMC"
 		url = uri("https://maven.terraformersmc.com/releases/")
 	}
-	// 国内加速（Maven Central 镜像）
-	maven {
-		name = "AliyunPublic"
-		url = uri("https://maven.aliyun.com/repository/public")
-	}
+	mavenCentral()
 }
 
 loom {
