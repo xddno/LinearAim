@@ -91,6 +91,20 @@ export JAVA_HOME="/d/Program Files/Eclipse Adoptium/jdk-25.0.5.8-hotspot"
 - `gradle/wrapper/gradle-wrapper.properties` 里的 `distributionUrl` 换成 `https://mirrors.cloud.tencent.com/gradle/gradle-9.8.2-bin.zip`
 - 在 `settings.gradle.kts` 和 `build.gradle.kts` 的 `repositories` 里加 `https://maven.aliyun.com/repository/public`
 
+## 贡献与分支策略
+
+`main` 分支受保护：
+
+- 禁止直接 push，所有改动走 Pull Request
+- 禁止 force push，禁止删除分支
+- PR 需要通过 CI（build）
+
+仓库自带 `pre-push` 钩子，本地启用一次即可在推送阶段提前拦截：
+
+```bash
+git config core.hooksPath .githooks
+```
+
 ## 许可与合规
 
 - 本项目**自己的代码**采用 [MIT 许可证](LICENSE)，版权归 xddno。
